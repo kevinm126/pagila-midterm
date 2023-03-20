@@ -12,3 +12,24 @@
  * NOTE:
  * Your results should not contain any duplicate titles.
  */
+select title from film
+where title not ilike '%f%'
+except
+select title from film
+join film_actor using(film_id)
+join actor using(actor_id)
+where CONCAT(actor.first_name,actor.last_name) ilike '%f%'
+except
+select title from film
+join inventory using(film_id)
+join rental using(inventory_id)
+join customer using(customer_id)
+join address using(address_id)
+join city using(city_id)
+join country using(country_id)
+where 
+    CONCAT(customer.first_name,customer.last_name) ilike '%f%'
+    or address ilike '%f%'
+    or city ilike '%f%'
+    or country ilike '%f%'
+order by title ASC 
